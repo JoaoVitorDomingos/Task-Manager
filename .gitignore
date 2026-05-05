@@ -23,3 +23,6 @@
 hs_err_pid*
 replay_pid*
 /task_manager/target/
+
+# Arquivos
+task_manager/repository/
