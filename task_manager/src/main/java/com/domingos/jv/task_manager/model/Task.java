@@ -1,5 +1,6 @@
 package com.domingos.jv.task_manager.model;
 
+import com.domingos.jv.task_manager.repository.TaskRepository;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class Task {
         
         this.tags = new HashSet<>();
         
-        this.id = null;
+        this.id = (long) TaskRepository.obterID();
     }
     
     public Task(String description, String[] tags) {
@@ -35,7 +36,7 @@ public class Task {
         this.tags = new HashSet<>();
         setTags(tags);
         
-        this.id = null;
+        this.id = (long) TaskRepository.obterID();
     }
     
     public boolean adicionarTag(String tag) {

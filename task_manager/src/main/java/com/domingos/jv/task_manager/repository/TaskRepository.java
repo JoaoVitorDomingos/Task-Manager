@@ -27,7 +27,7 @@ public class TaskRepository {
     BufferedReader reader;
     BufferedWriter writer;
 
-    int countID;
+    static int countID;
 
     public TaskRepository() {
         try {
@@ -35,7 +35,7 @@ public class TaskRepository {
 
             if (!Files.exists(directory)) {
                 Files.createDirectories(directory);
-                System.out.println("Diretório criado!");
+                System.out.println("Diretrio criado!");
             }
 
             filePath = directory.resolve(fileName);
@@ -45,7 +45,8 @@ public class TaskRepository {
                 countID = 0;
                 System.out.println("Arquivo criado!");
             } else {
-                System.out.println("Arquivo já existe!");
+                System.out.println("Arquivo ja existe!");
+                // TODO Carregar ID
             }
             
             reader = new BufferedReader(new FileReader(filePath.toFile()));
@@ -55,5 +56,9 @@ public class TaskRepository {
             System.out.println("Erro: " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+    
+    public static int obterID() {
+        return ++countID;
     }
 }
