@@ -2,6 +2,7 @@ package com.domingos.jv.task_manager.service;
 
 import com.domingos.jv.task_manager.enums.TaskStatus;
 import com.domingos.jv.task_manager.model.Task;
+import com.domingos.jv.task_manager.repository.TaskRepository;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,10 +18,13 @@ import java.util.Optional;
 public class TaskService {
     List<Task> taskList;
     Map<Long, Task> taskMap;
+    
+    TaskRepository taskRepository;
 
     public TaskService() {
         this.taskList = new LinkedList<>();
         this.taskMap = new HashMap<>();
+        this.taskRepository = new TaskRepository();
     }
     
     public void addTask(String description, String[] tags) {
@@ -79,5 +83,9 @@ public class TaskService {
         for (var task : this.taskList) {
             System.out.println(task.toStringTags());
         }
+    }
+    
+    public boolean save() {
+        return taskRepository.save(taskList);
     }
 }
