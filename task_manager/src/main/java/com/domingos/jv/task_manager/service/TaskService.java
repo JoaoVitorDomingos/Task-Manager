@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class TaskService {
     List<Task> taskList;
-    Map<Integer, Task> taskMap;
+    Map<Long, Task> taskMap;
 
     public TaskService() {
         this.taskList = new LinkedList<>();
@@ -24,19 +24,17 @@ public class TaskService {
     }
     
     public void addTask(String description, String[] tags) {
-        Task newTask;
-        
-        if(tags.length == 0) 
-            newTask = new Task(description);
-        else 
-            newTask = new Task(description, tags);
-        
-        // TODO - Criar id
-        int id = taskList.size();
-        newTask.setId((long) id);
+        Task newTask = new Task(description, tags);
         
         taskList.addLast(newTask);
-        taskMap.put(id, newTask);
+        taskMap.put(newTask.getId(), newTask);
+    }
+    
+    public void addTask(String description) {
+        Task newTask = new Task(description);
+        
+        taskList.add(newTask);
+        taskMap.put(newTask.getId(), newTask);
     }
     
     public Optional<Task> find(int id) {

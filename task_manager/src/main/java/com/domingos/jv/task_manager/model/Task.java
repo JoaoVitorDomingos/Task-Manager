@@ -25,7 +25,7 @@ public class Task {
         
         this.tags = new HashSet<>();
         
-        this.id = (long) TaskRepository.obterID();
+        this.id = TaskRepository.obterID();
     }
     
     public Task(String description, String[] tags) {
@@ -36,7 +36,7 @@ public class Task {
         this.tags = new HashSet<>();
         setTags(tags);
         
-        this.id = (long) TaskRepository.obterID();
+        this.id = TaskRepository.obterID();
     }
     
     public boolean adicionarTag(String tag) {

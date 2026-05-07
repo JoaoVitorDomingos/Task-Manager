@@ -27,7 +27,7 @@ public class TaskRepository {
     BufferedReader reader;
     BufferedWriter writer;
 
-    static int countID;
+    static long countID;
 
     public TaskRepository() {
         try {
@@ -58,7 +58,7 @@ public class TaskRepository {
         }
     }
     
-    public static int obterID() {
+    public static long obterID() {
         return ++countID;
     }
 }
