@@ -4,6 +4,7 @@ import com.domingos.jv.task_manager.model.Task;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -26,6 +28,8 @@ public class TaskRepository {
     Path directory;
     Path filePath;
 
+    boolean isFileCreated;
+    
     static long countID;
 
     public TaskRepository() {
@@ -41,18 +45,15 @@ public class TaskRepository {
 
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
-                countID = 0;
+                isFileCreated = true;
                 System.out.println("Arquivo criado!");
             } else {
+                isFileCreated = false;
                 System.out.println("Arquivo ja existe!");
-                // TODO Carregar ID
             }
             
-            //reader = new BufferedReader(new FileReader(filePath.toFile()));
-            
-
         } catch (IOException ex) {
-            System.out.println("Erro: " + ex.getMessage());
+            System.err.println("Erro: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -74,13 +75,77 @@ public class TaskRepository {
             }
             
         } catch (IOException ex) {
-            System.out.println("Ocorreu um erro ao salvar o arquivo");
-            System.out.println(ex);
+            System.err.println("Ocorreu um erro ao salvar o arquivo");
+            System.err.println(ex);
             
             return false;
         }
         
         return true;
+    }
+    
+    public List<Task> load() {
+        List<Task> taskList = new LinkedList<>();
+        
+        if(isFileCreated) {
+            countID = 0;
+            return taskList;
+        }
+        
+        try(BufferedReader reader =
+                new BufferedReader(new FileReader(filePath.toFile()));) {
+            
+            this.countID = Long.parseLong(reader.readLine());
+            
+            System.out.println("Id carregado: " + countID);
+            
+            String line = reader.readLine();
+            
+            while(line != null) {
+                System.out.println("linha: " + line);
+                
+                String[] values = line.split(";");
+                
+                for (var v : values) {
+                    System.out.println(v);
+                }
+                
+                taskList.add(criarTask(values));
+                
+                line = reader.readLine();
+            }
+            
+        } catch (IOException ex) {
+            System.err.println("Erro ao carregar o arquivo!");
+            System.err.println(ex);
+        }
+        
+        return taskList;
+    }
+    
+    private Task criarTask(String[] values) {
+        long id = Long.parseLong(values[0]);
+        
+        String description = values[1];
+        
+        Task t = new Task(description);
+        t.setId(id);
+        
+        int tamTags = values[2].length();
+        
+        String tagsString = 
+                values[2].substring(1, tamTags - 1);
+        
+        if(!tagsString.isEmpty()) {
+            String[] tags = tagsString.split(",");
+            
+            for (var tag : tags) {
+                System.out.println("Tag: " + tag.trim());
+                t.adicionarTag(tag.trim());
+            }
+        } else System.out.println("Nao tem tags!");
+        
+        return t;
     }
     
     public static long obterID() {

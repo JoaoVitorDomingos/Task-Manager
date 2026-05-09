@@ -22,9 +22,18 @@ public class TaskService {
     TaskRepository taskRepository;
 
     public TaskService() {
-        this.taskList = new LinkedList<>();
-        this.taskMap = new HashMap<>();
         this.taskRepository = new TaskRepository();
+        
+        this.taskList = taskRepository.load();
+        
+        this.taskMap = new HashMap<>();
+        carregarMap();
+    }
+    
+    private void carregarMap() {
+        for (var task : this.taskList) {
+            this.taskMap.put(task.getId(), task);
+        }
     }
     
     public void addTask(String description, String[] tags) {
