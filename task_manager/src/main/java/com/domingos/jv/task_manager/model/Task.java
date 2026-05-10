@@ -18,17 +18,17 @@ public class Task {
     
     Set<String> tags;
 
-    public Task(String description) {
+    public Task(long id, String description) {
         this.description = description;
         
         this.isFinished = false;
         
         this.tags = new HashSet<>();
         
-        this.id = TaskRepository.obterID();
+        this.id = id;
     }
     
-    public Task(String description, String[] tags) {
+    public Task(long id, String description, String[] tags) {
         this.description = description;
         
         this.isFinished = false;
@@ -36,7 +36,7 @@ public class Task {
         this.tags = new HashSet<>();
         setTags(tags);
         
-        this.id = TaskRepository.obterID();
+        this.id = id;
     }
     
     public boolean adicionarTag(String tag) {

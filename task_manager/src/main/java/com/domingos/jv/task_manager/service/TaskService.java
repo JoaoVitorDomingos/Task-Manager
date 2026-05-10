@@ -20,6 +20,8 @@ public class TaskService {
     Map<Long, Task> taskMap;
     
     TaskRepository taskRepository;
+    
+    long nextID;
 
     public TaskService() {
         this.taskRepository = new TaskRepository();
@@ -28,23 +30,40 @@ public class TaskService {
         
         this.taskMap = new HashMap<>();
         carregarMap();
+        
+        this.nextID = getMaxId() + 1;
     }
     
-    private void carregarMap() {
+    void carregarMap() {
         for (var task : this.taskList) {
             this.taskMap.put(task.getId(), task);
         }
     }
     
+    long getMaxId() {
+        if(taskList.isEmpty()) return 0;
+        
+        long max = taskList.getFirst().getId();
+        
+        Task t;
+        for (int i = 1; i < taskList.size(); i++) {
+            t = taskList.get(i);
+            
+            if(t.getId() > max) max = t.getId();
+        }
+        
+        return max;
+    }
+    
     public void addTask(String description, String[] tags) {
-        Task newTask = new Task(description, tags);
+        Task newTask = new Task(nextID++, description, tags);
         
         taskList.addLast(newTask);
         taskMap.put(newTask.getId(), newTask);
     }
     
     public void addTask(String description) {
-        Task newTask = new Task(description);
+        Task newTask = new Task(nextID++, description);
         
         taskList.add(newTask);
         taskMap.put(newTask.getId(), newTask);

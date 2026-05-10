@@ -3,18 +3,14 @@ package com.domingos.jv.task_manager.repository;
 import com.domingos.jv.task_manager.model.Task;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /*
     Classe responsável pela persistência do programa
@@ -30,7 +26,7 @@ public class TaskRepository {
 
     boolean isFileCreated;
     
-    static long countID;
+    //static long countID;
 
     public TaskRepository() {
         try {
@@ -62,9 +58,6 @@ public class TaskRepository {
         try(BufferedWriter writer = 
                 new BufferedWriter(new FileWriter(filePath.toFile()))) {
             
-            writer.write(String.valueOf(countID));
-            writer.newLine();
-            
             for (var task : taskList) {
                 String s = task.getId() + ";" 
                         + task.getDescription() + ";"
@@ -88,16 +81,11 @@ public class TaskRepository {
         List<Task> taskList = new LinkedList<>();
         
         if(isFileCreated) {
-            countID = 0;
             return taskList;
         }
         
         try(BufferedReader reader =
                 new BufferedReader(new FileReader(filePath.toFile()));) {
-            
-            this.countID = Long.parseLong(reader.readLine());
-            
-            System.out.println("Id carregado: " + countID);
             
             String line = reader.readLine();
             
@@ -128,8 +116,7 @@ public class TaskRepository {
         
         String description = values[1];
         
-        Task t = new Task(description);
-        t.setId(id);
+        Task t = new Task(id, description);
         
         int tamTags = values[2].length();
         
@@ -146,9 +133,5 @@ public class TaskRepository {
         } else System.out.println("Nao tem tags!");
         
         return t;
-    }
-    
-    public static long obterID() {
-        return ++countID;
     }
 }
