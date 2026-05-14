@@ -122,7 +122,11 @@ public class Main {
     }
     
     static void listTasks() {
-        System.out.println("\n-------- Lista de tarefas");
+        System.out.println("\n-------- Lista");
+        
+        taskService.listTasks();
+        
+        pause();
     }
     
     static void finishTask() {
