@@ -3,6 +3,7 @@ package com.domingos.jv.task_manager.model;
 import com.domingos.jv.task_manager.repository.TaskRepository;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 /*
@@ -28,7 +29,7 @@ public class Task {
         this.id = id;
     }
     
-    public Task(long id, String description, String[] tags) {
+    public Task(long id, String description, HashSet<String> tags) {
         this.description = description;
         
         this.isFinished = false;
@@ -93,8 +94,8 @@ public class Task {
         return tags;
     }
 
-    public void setTags(String[] tags) {
-        this.tags.addAll(Arrays.asList(tags));
+    public void setTags(HashSet<String> tags) {
+        this.tags = tags;
     }
     
     

@@ -4,10 +4,12 @@ import com.domingos.jv.task_manager.enums.TaskStatus;
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.repository.TaskRepository;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /*
     Classe responsável por toda regra de negócio
@@ -55,7 +57,7 @@ public class TaskService {
         return max;
     }
     
-    public void addTask(String description, String[] tags) {
+    public void addTask(String description, HashSet<String> tags) {
         Task newTask = new Task(nextID++, description, tags);
         
         taskList.addLast(newTask);
@@ -127,6 +129,11 @@ public class TaskService {
     
     public void listTop5Tasks() {
         if(isEmpty()) return;
+        
+        if(taskList.size() < 5) {
+            listTasks();
+            return;
+        }
         
         System.out.println("Lista de tarefas: ");
         
