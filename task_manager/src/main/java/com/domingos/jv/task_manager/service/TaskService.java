@@ -96,8 +96,18 @@ public class TaskService {
                 })
                 .orElseGet(() -> TaskStatus.NOT_FOUND);
     }
+    
+    boolean isEmpty() {
+        if(taskList.isEmpty()) {
+            System.out.println("Voce nao possui nenhuma tarefa"
+                    + " no momento!");
+            return true;
+        } else return false;
+    }
 
     public void listTasks() {
+        if(isEmpty()) return;
+        
         System.out.println("Lista de Tarefas:");
         
         for (var task : this.taskList) {
@@ -106,11 +116,26 @@ public class TaskService {
     }
     
     public void listTasksTags() {
+        if(isEmpty()) return;
+        
         System.out.println("Lista de Tarefas com Tags:");
         
         for (var task : this.taskList) {
             System.out.println(task.toStringTags());
         }
+    }
+    
+    public void listTop5Tasks() {
+        if(isEmpty()) return;
+        
+        System.out.println("Lista de tarefas: ");
+        
+        for(int i = 0; i < 5; i++) {
+            System.out.println(taskList.get(i));
+        }
+        
+        if(taskList.size() > 5)
+            System.out.println("...");
     }
     
     public boolean save() {
