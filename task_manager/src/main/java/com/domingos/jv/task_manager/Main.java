@@ -63,7 +63,7 @@ public class Main {
     }
     
     static void editTask() {
-        System.out.println("\n-------- Edição de tarefa");
+        System.out.println("\n-------- Edicao de tarefa");
     }
     
     static void listTasks() {
