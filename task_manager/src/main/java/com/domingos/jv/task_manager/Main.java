@@ -87,6 +87,23 @@ public class Main {
         return ret;
     }
     
+    static String readYesNo() {
+        String res;
+        do {
+            System.out.print("(Y/N): ");
+            res = scanner.nextLine().trim();
+            
+            if(!res.equalsIgnoreCase("Y") 
+                && !res.equalsIgnoreCase("N"))
+                System.err.println("\n--\n"
+                        + "Digite apenas Y (Sim) ou N (Nao)");
+            
+        } while(!res.equalsIgnoreCase("Y") 
+                && !res.equalsIgnoreCase("N"));
+        
+        return res;
+    }
+    
     static void pause() {
         System.out.println("\nDigite qualquer tecla para continuar...");
         scanner.nextLine();
@@ -101,18 +118,7 @@ public class Main {
         System.out.println("\n--\nVoce quer adicionar tags na tarefa?");
         System.out.println("Obs: tags servem para filtrar as terefas");
         
-        String res;
-        do {
-            System.out.print("(Y/N): ");
-            res = scanner.nextLine().trim();
-            
-            if(!res.equalsIgnoreCase("Y") 
-                && !res.equalsIgnoreCase("N"))
-                System.err.println("\n--\n"
-                        + "Digite apenas Y (Sim) ou N (Nao)");
-            
-        } while(!res.equalsIgnoreCase("Y") 
-                && !res.equalsIgnoreCase("N"));
+        String res = readYesNo();
         
         HashSet<String> tags = new HashSet<>();
         if(res.equalsIgnoreCase("Y")) {
