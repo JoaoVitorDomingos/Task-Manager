@@ -31,14 +31,9 @@ public class Main {
             printMenu();
         
             System.out.print("Qual operacao deseja realizar? ");
-            
-            try {
-                number = Integer.parseInt(scanner.nextLine());
-            } catch(NumberFormatException ex) {
-                number = Operations.INVALID.getCode();
-            }
 
-            op = Operations.fromCode(number);
+            op = Operations.fromCode(
+                    readInt(scanner.nextLine()));
 
             switch(op) {
                 case CREATE -> createTask();
@@ -66,6 +61,30 @@ public class Main {
         System.out.println("4 - Listar tarefas");
         System.out.println("5 - Concluir tarefa");
         System.out.println("0 - Sair\n");
+    }
+    
+    static int readInt(String input) {
+        int ret;
+        
+        try {
+            ret = Integer.parseInt(input);
+        } catch(NumberFormatException ex) {
+            ret = -1;
+        }
+        
+        return ret;
+    }
+    
+    static long readLong(String input) {
+        long ret;
+        
+        try {
+            ret = Long.parseLong(input);
+        } catch(NumberFormatException ex) {
+            ret = -1;
+        }
+        
+        return ret;
     }
     
     static void pause() {
