@@ -156,6 +156,40 @@ public class Main {
     
     static void finishTask() {
         System.out.println("\n-------- Finalizar tarefa");
+        
+        taskService.listTasks();
+        
+        long id;
+        boolean exist;
+        
+        do {
+            System.out.println("\n--Qual tarefa deseja finalizar?");
+            System.out.print("Digite o numero: ");
+            id = readLong(scanner.nextLine());
+
+            exist = taskService.existTask(id);
+
+            if(!exist) {
+                System.err.println("\n===========================");
+                System.err.println("Esta tarefa nao existe!");
+                System.err.println("===========================\n");
+                pause();
+            }
+            
+        } while(!exist);
+        
+        System.out.println("\n--Voce deseja concluir a seguinte tarefa?");
+        taskService.printTask(id);
+        
+        String res = readYesNo();
+        
+        if(res.equalsIgnoreCase("Y")) {
+            taskService.completeTask(id);
+            
+            System.out.println("\n--Tarefa finalizada!");
+        } else System.out.println("\n--Tarefa nao foi concluida.");
+        
+        pause();
     }
     
     static void removeTask() {

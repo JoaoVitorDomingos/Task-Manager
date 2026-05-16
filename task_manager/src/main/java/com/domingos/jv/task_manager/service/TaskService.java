@@ -71,13 +71,17 @@ public class TaskService {
         taskMap.put(newTask.getId(), newTask);
     }
     
-    public Optional<Task> find(int id) {
+    Optional<Task> find(long id) {
         Task task = taskMap.get(id);
         
         return Optional.ofNullable(task);
     }
     
-    public TaskStatus completeTask(int id) {
+    public boolean existTask(long id) {
+        return find(id).isPresent();
+    }
+    
+    public TaskStatus completeTask(long id) {
         return find(id)
                 .map(task -> {
                     if(task.isIsFinished()) return TaskStatus.ALREADY_COMPLETED;
@@ -88,7 +92,7 @@ public class TaskService {
                 .orElseGet(() -> TaskStatus.NOT_FOUND);
     }
     
-    public TaskStatus removeTask(int id) {
+    public TaskStatus removeTask(long id) {
         return find(id)
                 .map(task -> {
                     taskList.remove(task);
@@ -143,6 +147,13 @@ public class TaskService {
         
         if(taskList.size() > 5)
             System.out.println("...");
+    }
+    
+    public void printTask(long id) {
+        find(id)
+                .ifPresentOrElse(System.out::println, 
+                        () -> System.out.
+                                println("Esta tarefa nao existe!"));
     }
     
     public boolean save() {
