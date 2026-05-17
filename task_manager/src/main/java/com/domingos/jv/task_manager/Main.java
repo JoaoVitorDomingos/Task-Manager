@@ -176,7 +176,8 @@ public class Main {
             System.out.print("Digite a tag: ");
             tag = scanner.nextLine().trim();
 
-            tags.add(tag);
+            if(!tag.isEmpty())
+                tags.add(tag);
 
         } while(!tag.isEmpty());
         

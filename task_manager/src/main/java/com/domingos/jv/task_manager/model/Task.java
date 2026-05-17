@@ -34,7 +34,6 @@ public class Task {
         
         this.isFinished = false;
         
-        this.tags = new HashSet<>();
         setTags(tags);
         
         this.id = id;
