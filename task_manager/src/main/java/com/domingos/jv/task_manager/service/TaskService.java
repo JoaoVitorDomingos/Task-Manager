@@ -122,6 +122,18 @@ public class TaskService {
                 })
                 .orElseGet(() -> TaskStatus.NOT_FOUND);
     }
+    
+    public TaskStatus addTags(long id, String[] newTags) {
+        return find(id)
+                .map(task -> {
+                    for (var tag : newTags) {
+                        task.adicionarTag(tag);
+                    }
+                    
+                    return TaskStatus.SUCESS;
+                })
+                .orElseGet(() -> TaskStatus.NOT_FOUND);
+    }
 
     // Print
     public void listTasks() {
@@ -167,6 +179,13 @@ public class TaskService {
                 .ifPresentOrElse(System.out::println, 
                         () -> System.out.
                                 println("Esta tarefa nao existe!"));
+    }
+    
+    public void printTaskTags(long id) {
+        find(id)
+                .ifPresentOrElse(task -> task.toStringTags(), 
+                        () -> System.out
+                                .println("Esta tarefa nao existe!"));
     }
     
     // Repository

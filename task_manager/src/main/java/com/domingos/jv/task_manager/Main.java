@@ -252,6 +252,23 @@ public class Main {
             }
             case ADD_TAG -> {
                 System.out.println("\n--Adicionar Tag");
+                
+                taskService.listTasksTags();
+                long id = readTask("adicionar tags");
+                
+                taskService.printTaskTags(id);
+                List<String> newTagas = readTag();
+                
+                TaskStatus status = taskService.addTags(id, 
+                        newTagas.toArray(String[]::new));
+                
+                if(status == TaskStatus.SUCESS) {
+                    System.out.println("\n--Tags adicionadas com sucesso!");
+                } else 
+                    System.out.println("\n--Ocorreu um erro "
+                            + "ao adicionar as tags");
+                
+                pause();
             }
             case REMOVE_TAG -> {
                 System.out.println("\n--Remover Tag");
