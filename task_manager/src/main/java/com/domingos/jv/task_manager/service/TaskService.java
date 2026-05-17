@@ -57,6 +57,7 @@ public class TaskService {
         return max;
     }
     
+    // Service
     public void addTask(String description, HashSet<String> tags) {
         Task newTask = new Task(nextID++, description, tags);
         
@@ -81,17 +82,6 @@ public class TaskService {
         return find(id).isPresent();
     }
     
-    public TaskStatus completeTask(long id) {
-        return find(id)
-                .map(task -> {
-                    if(task.isIsFinished()) return TaskStatus.ALREADY_COMPLETED;
-                    
-                    task.setIsFinished(true);
-                    return TaskStatus.SUCESS;
-                })
-                .orElseGet(() -> TaskStatus.NOT_FOUND);
-    }
-    
     public TaskStatus removeTask(long id) {
         return find(id)
                 .map(task -> {
@@ -110,7 +100,20 @@ public class TaskService {
             return true;
         } else return false;
     }
+    
+    // Task
+    public TaskStatus completeTask(long id) {
+        return find(id)
+                .map(task -> {
+                    if(task.isIsFinished()) return TaskStatus.ALREADY_COMPLETED;
+                    
+                    task.setIsFinished(true);
+                    return TaskStatus.SUCESS;
+                })
+                .orElseGet(() -> TaskStatus.NOT_FOUND);
+    }
 
+    // Print
     public void listTasks() {
         if(isEmpty()) return;
         
@@ -156,6 +159,7 @@ public class TaskService {
                                 println("Esta tarefa nao existe!"));
     }
     
+    // Repository
     public boolean save() {
         return taskRepository.save(taskList);
     }
