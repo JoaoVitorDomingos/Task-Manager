@@ -134,6 +134,18 @@ public class TaskService {
                 })
                 .orElseGet(() -> TaskStatus.NOT_FOUND);
     }
+    
+    public TaskStatus removeTags(long id, String[] tagsToRemove) {
+        return find(id)
+                .map(task -> {
+                    for (var tag : tagsToRemove) {
+                        task.removerTag(tag);
+                    }
+                    
+                    return TaskStatus.SUCESS;
+                })
+                .orElseGet(() -> TaskStatus.NOT_FOUND);
+    }
 
     // Print
     public void listTasks() {

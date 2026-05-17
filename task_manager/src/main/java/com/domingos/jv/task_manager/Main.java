@@ -248,8 +248,6 @@ public class Main {
                 else 
                     System.out.println("\n--Ocorreu um erro "
                             + "ao alterar o nome!!");
-                
-                pause();
             }
             case ADD_TAG -> {
                 System.out.println("\n--Adicionar Tag");
@@ -268,18 +266,30 @@ public class Main {
                 } else 
                     System.out.println("\n--Ocorreu um erro "
                             + "ao adicionar as tags");
-                
-                pause();
             }
             case REMOVE_TAG -> {
                 System.out.println("\n--Remover Tag");
+                
+                taskService.listTasksTags();
+                long id = readTask("remover tags");
+                
+                taskService.printTaskTags(id);
+                List<String> tagsToRemove = readTag();
+                
+                TaskStatus status = taskService.removeTags(id, 
+                        tagsToRemove.toArray(String[]::new));
+                
+                if(status == TaskStatus.SUCESS) {
+                    System.out.println("\n--Tags removidas com sucesso!");
+                } else 
+                    System.out.println("\n--Ocorreu um erro "
+                            + "ao remover as tags");
             }
             case CANCEL -> {
-                System.out.println("\n--Cancelando...");
-                pause();
+                System.out.println("\n--Operacao cancelada!");
             }
         }
-        pause(); // TODO Remover depois
+        pause();
     }
     
     static void listTasks() {
