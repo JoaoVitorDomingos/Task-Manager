@@ -10,6 +10,7 @@ import static com.domingos.jv.task_manager.enums.Operations.FINISH;
 import static com.domingos.jv.task_manager.enums.Operations.INVALID;
 import static com.domingos.jv.task_manager.enums.Operations.LIST;
 import static com.domingos.jv.task_manager.enums.Operations.REMOVE;
+import com.domingos.jv.task_manager.enums.TaskStatus;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -227,6 +228,24 @@ public class Main {
         switch (op) {
             case NAME -> {
                 System.out.println("\n--Editar nome");
+                
+                taskService.listTasks();
+                long id = readTask("editar o nome");
+                
+                taskService.printTask(id);
+                System.out.print("Digite o novo nome: ");
+                String newName = scanner.nextLine();
+                
+                TaskStatus status = taskService
+                        .editTaskDescription(id, newName);
+                
+                if(status == TaskStatus.SUCESS) 
+                    System.out.println("\n--Nome alterado com sucesso!");
+                else 
+                    System.out.println("\n--Ocorreu um erro "
+                            + "ao alterar o nome!!");
+                
+                pause();
             }
             case ADD_TAG -> {
                 System.out.println("\n--Adicionar Tag");

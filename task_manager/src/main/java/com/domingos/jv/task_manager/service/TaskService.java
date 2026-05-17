@@ -112,6 +112,16 @@ public class TaskService {
                 })
                 .orElseGet(() -> TaskStatus.NOT_FOUND);
     }
+    
+    public TaskStatus editTaskDescription(long id, String newDescription) {
+        return find(id)
+                .map(task -> {
+                    task.setDescription(newDescription);
+                    
+                    return TaskStatus.SUCESS;
+                })
+                .orElseGet(() -> TaskStatus.NOT_FOUND);
+    }
 
     // Print
     public void listTasks() {
