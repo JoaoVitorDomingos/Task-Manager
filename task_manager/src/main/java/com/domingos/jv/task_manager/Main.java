@@ -1,5 +1,7 @@
 package com.domingos.jv.task_manager;
 
+import com.domingos.jv.task_manager.enums.EditOperation;
+import static com.domingos.jv.task_manager.enums.EditOperation.NAME;
 import com.domingos.jv.task_manager.enums.Operations;
 import static com.domingos.jv.task_manager.enums.Operations.CREATE;
 import static com.domingos.jv.task_manager.enums.Operations.EDIT;
@@ -203,6 +205,41 @@ public class Main {
     
     static void editTask() {
         System.out.println("\n-------- Edicao de tarefa");
+        // Nome - Tags (Adicionar | Remover)
+        EditOperation op;
+        
+        do {
+            System.out.println("\n---Qual edicao deseja realizar?");
+            System.out.println("1 - Editar nome");
+            System.out.println("2 - Adicionar Tag");
+            System.out.println("3 - Remover Tag");
+            System.out.println("0 - Cancelar");
+            
+            System.out.print("Digite um numero: ");
+            String stringOp = scanner.nextLine();
+            
+            op = EditOperation.fromCode(readInt(stringOp));
+            
+            if(op == EditOperation.INVALID) invalidPrint();
+            
+        } while(op == EditOperation.INVALID);
+        
+        switch (op) {
+            case NAME -> {
+                System.out.println("\n--Editar nome");
+            }
+            case ADD_TAG -> {
+                System.out.println("\n--Adicionar Tag");
+            }
+            case REMOVE_TAG -> {
+                System.out.println("\n--Remover Tag");
+            }
+            case CANCEL -> {
+                System.out.println("\n--Cancelando...");
+                pause();
+            }
+        }
+        pause(); // TODO Remover depois
     }
     
     static void listTasks() {
