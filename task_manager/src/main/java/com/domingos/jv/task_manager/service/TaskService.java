@@ -127,7 +127,7 @@ public class TaskService {
         return find(id)
                 .map(task -> {
                     for (var tag : newTags) {
-                        task.adicionarTag(tag);
+                        task.adicionarTag(tag.toLowerCase());
                     }
                     
                     return TaskStatus.SUCESS;
@@ -139,7 +139,7 @@ public class TaskService {
         return find(id)
                 .map(task -> {
                     for (var tag : tagsToRemove) {
-                        task.removerTag(tag);
+                        task.removerTag(tag.toLowerCase());
                     }
                     
                     return TaskStatus.SUCESS;

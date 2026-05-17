@@ -177,7 +177,7 @@ public class Main {
             tag = scanner.nextLine().trim();
 
             if(!tag.isEmpty())
-                tags.add(tag);
+                tags.add(tag.toLowerCase());
 
         } while(!tag.isEmpty());
         
