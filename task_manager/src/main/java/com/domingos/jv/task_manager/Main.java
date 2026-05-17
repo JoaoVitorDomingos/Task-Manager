@@ -87,6 +87,43 @@ public class Main {
         return ret;
     }
     
+    static int readValidInt() {
+        int number;
+        
+        do {
+            number = readInt(scanner.nextLine());
+            
+            if(number == -1) {
+                System.out.println("\n=================");
+                System.out.println("Digite apenas numeros");
+                System.out.println("=================");
+                
+                pause();
+            }
+        } while(number == -1);
+        
+        return number;
+    }
+    
+    static long readValidLong() {
+        long number;
+        
+        do {
+            System.out.print("Digite o numero: ");
+            number = readLong(scanner.nextLine());
+            
+            if(number == -1) {
+                System.out.println("\n=================");
+                System.out.println("Digite apenas numeros");
+                System.out.println("=================");
+                
+                pause();
+            }
+        } while(number == -1);
+        
+        return number;
+    }
+    
     static String readYesNo() {
         String res;
         do {
