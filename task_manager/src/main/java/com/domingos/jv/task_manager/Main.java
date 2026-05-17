@@ -236,6 +236,26 @@ public class Main {
     
     static void removeTask() {
         System.out.println("\n-------- Remover tarefa");
+        
+        taskService.listTasks();
+        
+        long id = readTask("remover");
+        
+        System.out.println("\n--Voce realmente deseja remover esta tarefa?");
+        taskService.printTask(id);
+        
+        String res = readYesNo();
+        
+        if(res.equalsIgnoreCase("Y")) {
+            taskService.removeTask(id);
+            
+            System.out.println("\n--Tarefa removida com sucesso");
+            
+            pause();
+        } else {
+            System.out.println("\n--Operacao cancelada!");
+            pause();
+        }
     }
     
     static void invalidPrint() {
