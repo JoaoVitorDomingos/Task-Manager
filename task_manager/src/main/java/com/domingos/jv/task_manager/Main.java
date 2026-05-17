@@ -189,6 +189,30 @@ public class Main {
         scanner.nextLine();
     }
     
+    static void pauseTime(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    static void printExit(String menssage) {
+        System.out.print("\n--" + menssage);
+        
+        pauseTime(1500);
+        
+        System.out.print(".");
+        
+        pauseTime(1000);
+        
+        System.out.print(".");
+        
+        pauseTime(800);
+        
+        System.out.print(".\n");
+    }
+    
     static void createTask() {
         System.out.println("\n-------- Criacao de tarefa");
         
@@ -355,5 +379,15 @@ public class Main {
     
     static void exit() {
         System.out.println("\n-------- Saindo");
+        
+        boolean status = taskService.save();
+        printExit("Salvando tarefas");
+        
+        if(status) 
+            System.out.println("Tarefas salvas com sucesso!");
+        else 
+            System.err.println("Ocorreu um erro ao salvar as tarefas!");
+        
+        printExit("Saindo");
     }
 }
