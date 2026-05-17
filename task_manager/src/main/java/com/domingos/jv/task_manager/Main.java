@@ -141,6 +141,28 @@ public class Main {
         return res;
     }
     
+    static long readTask(String operation) {
+        long id;
+        boolean exist;
+        
+        do {
+            System.out.println("\n--Qual tarefa deseja " + operation + "?");
+            id = readValidLong();
+
+            exist = taskService.existTask(id);
+
+            if(!exist) {
+                System.err.println("\n===========================");
+                System.err.println("Esta tarefa nao existe!");
+                System.err.println("===========================\n");
+                pause();
+            }
+            
+        } while(!exist);
+        
+        return id;
+    }
+    
     static void pause() {
         System.out.println("\nDigite qualquer tecla para continuar...");
         scanner.nextLine();
@@ -196,24 +218,7 @@ public class Main {
         
         taskService.listTasks();
         
-        long id;
-        boolean exist;
-        
-        do {
-            System.out.println("\n--Qual tarefa deseja finalizar?");
-            System.out.print("Digite o numero: ");
-            id = readLong(scanner.nextLine());
-
-            exist = taskService.existTask(id);
-
-            if(!exist) {
-                System.err.println("\n===========================");
-                System.err.println("Esta tarefa nao existe!");
-                System.err.println("===========================\n");
-                pause();
-            }
-            
-        } while(!exist);
+        long id = readTask("finalizar");
         
         System.out.println("\n--Voce deseja concluir a seguinte tarefa?");
         taskService.printTask(id);
