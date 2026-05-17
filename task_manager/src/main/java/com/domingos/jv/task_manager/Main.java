@@ -166,6 +166,23 @@ public class Main {
         return id;
     }
     
+    static List<String> readTag() {
+        List<String> tags = new LinkedList<>();
+        String tag;
+        
+        do {
+            System.out.println("\n--\n"
+                    + "Obs: Deixe em branco para finalizar");
+            System.out.print("Digite a tag: ");
+            tag = scanner.nextLine().trim();
+
+            tags.add(tag);
+
+        } while(!tag.isEmpty());
+        
+        return tags;
+    }
+    
     static void pause() {
         System.out.println("\nDigite qualquer tecla para continuar...");
         scanner.nextLine();
@@ -183,23 +200,9 @@ public class Main {
         String res = readYesNo();
         
         HashSet<String> tags = new HashSet<>();
-        if(res.equalsIgnoreCase("Y")) {
-            String tag;
-            do {
-                System.out.println("\n--\n"
-                        + "Obs: Deixe em branco para finalizar");
-                System.out.print("Digite a tag: ");
-                tag = scanner.nextLine().trim();
-                
-                boolean isAdded = tags.add(tag);
-                
-                if(!isAdded) {
-                    System.out.println("\n--\n"
-                            + "Tag ja adicionada anteriormente!");
-                }
-                
-            } while(!tag.isEmpty());
-        }
+        
+        if(res.equalsIgnoreCase("Y"))
+            tags.addAll(readTag());
         
         taskService.addTask(nome, tags);
     }
