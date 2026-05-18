@@ -1,16 +1,13 @@
 package com.domingos.jv.task_manager.model;
 
-import com.domingos.jv.task_manager.repository.TaskRepository;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 /*
     Classe entidade da tarefa.
 */
 
-public class Task {
+public class Task implements Comparable<Task> {
     Long id;
     
     String description;
@@ -96,6 +93,10 @@ public class Task {
     public void setTags(HashSet<String> tags) {
         this.tags = tags;
     }
-    
-    
+
+    // Comparable
+    @Override
+    public int compareTo(Task o) {
+        return (int) (this.id - o.getId());
+    }
 }

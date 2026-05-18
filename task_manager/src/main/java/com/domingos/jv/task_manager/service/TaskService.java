@@ -153,6 +153,8 @@ public class TaskService {
         
         System.out.println("Lista de Tarefas:");
         
+        this.taskList.sort(null);
+        
         for (var task : this.taskList) {
             System.out.println(task);
         }
@@ -162,6 +164,8 @@ public class TaskService {
         if(isEmpty()) return;
         
         System.out.println("Lista de Tarefas com Tags:");
+        
+        this.taskList.sort(null);
         
         for (var task : this.taskList) {
             System.out.println(task.toStringTags());
@@ -177,6 +181,8 @@ public class TaskService {
         }
         
         System.out.println("Lista de tarefas: ");
+        
+        this.taskList.sort(null);
         
         for(int i = 0; i < 5; i++) {
             System.out.println(taskList.get(i));
