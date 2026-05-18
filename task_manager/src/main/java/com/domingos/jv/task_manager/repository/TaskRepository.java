@@ -61,7 +61,8 @@ public class TaskRepository {
             for (var task : taskList) {
                 String s = task.getId() + ";" 
                         + task.getDescription() + ";"
-                        + task.getTags();
+                        + task.getTags() + ";"
+                        + task.isFinished();
                 
                 writer.write(s);
                 writer.newLine();
@@ -131,6 +132,12 @@ public class TaskRepository {
                 t.adicionarTag(tag.trim());
             }
         } else System.out.println("Nao tem tags!");
+        
+        boolean status = Boolean.parseBoolean(values[3]);
+        
+        System.out.println("Conclusao: " + status);
+        
+        t.setFinished(status);
         
         return t;
     }

@@ -105,9 +105,9 @@ public class TaskService {
     public TaskStatus completeTask(long id) {
         return find(id)
                 .map(task -> {
-                    if(task.isIsFinished()) return TaskStatus.ALREADY_COMPLETED;
+                    if(task.isFinished()) return TaskStatus.ALREADY_COMPLETED;
                     
-                    task.setIsFinished(true);
+                    task.setFinished(true);
                     return TaskStatus.SUCESS;
                 })
                 .orElseGet(() -> TaskStatus.NOT_FOUND);

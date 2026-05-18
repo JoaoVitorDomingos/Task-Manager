@@ -15,14 +15,14 @@ public class Task {
     
     String description;
     
-    boolean isFinished;
+    boolean Finished;
     
     Set<String> tags;
 
     public Task(long id, String description) {
         this.description = description;
         
-        this.isFinished = false;
+        this.Finished = false;
         
         this.tags = new HashSet<>();
         
@@ -32,7 +32,7 @@ public class Task {
     public Task(long id, String description, HashSet<String> tags) {
         this.description = description;
         
-        this.isFinished = false;
+        this.Finished = false;
         
         setTags(tags);
         
@@ -55,7 +55,7 @@ public class Task {
     @Override
     public String toString() {
         return id + " - " + description
-                + (isFinished ? " (Finalizada)" : " (Nao finalizada)");
+                + (Finished ? " (Finalizada)" : " (Nao finalizada)");
     }
     
     public String toStringTags() {
@@ -81,12 +81,12 @@ public class Task {
         this.description = description;
     }
 
-    public boolean isIsFinished() {
-        return isFinished;
+    public boolean isFinished() {
+        return Finished;
     }
 
-    public void setIsFinished(boolean isFinished) {
-        this.isFinished = isFinished;
+    public void setFinished(boolean isFinished) {
+        this.Finished = isFinished;
     }
 
     public Set<String> getTags() {
