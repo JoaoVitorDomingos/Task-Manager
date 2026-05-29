@@ -7,19 +7,15 @@ public enum EditOperation {
     CANCEL(0),
     INVALID(-1);
     
-    int code;
+    final int code;
 
     private EditOperation(int code) {
         this.code = code;
     }
-
-    public int getCode() {
-        return code;
-    }
     
     public static EditOperation fromCode(int number) {
         for (var op : EditOperation.values()) {
-            if(number == op.getCode()) return op;
+            if(number == op.code) return op;
         }
         
         return INVALID;
