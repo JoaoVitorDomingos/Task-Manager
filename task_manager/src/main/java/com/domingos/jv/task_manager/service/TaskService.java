@@ -1,8 +1,12 @@
 package com.domingos.jv.task_manager.service;
 
+import com.domingos.jv.task_manager.enums.ListingType;
+import com.domingos.jv.task_manager.enums.SortingType;
 import com.domingos.jv.task_manager.enums.TaskStatus;
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.repository.TaskRepository;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -148,24 +152,49 @@ public class TaskService {
     }
 
     // Print
-    public void listTasks() {
+    public void list(ListingType typeListing, 
+            SortingType typeSorting) {
+        
+        if(typeListing == ListingType.SIMPLE) {
+            switch(typeSorting) {
+                case NATURAL -> listTasks(null);
+                case DESC_NATURAL -> 
+                    listTasks(Collections.reverseOrder());
+                case ALPHABETICAL -> listTasks(alphabeticalSorting);
+                case DESC_ALPHABETICAL -> 
+                    listTasks(Collections.reverseOrder(alphabeticalSorting));
+            }
+            
+        } else {
+            switch(typeSorting) {
+                case NATURAL -> listTasksTags(null);
+                case DESC_NATURAL -> 
+                    listTasksTags(Collections.reverseOrder());
+                case ALPHABETICAL -> listTasksTags(alphabeticalSorting);
+                case DESC_ALPHABETICAL -> 
+                    listTasksTags(Collections.reverseOrder(alphabeticalSorting));
+            }
+        }
+    }
+    
+    public void listTasks(Comparator<Task> comparator) {
         if(isEmpty()) return;
         
-        System.out.println("Lista de Tarefas:");
+        System.out.println("\nLista de Tarefas:");
         
-        this.taskList.sort(null);
+        this.taskList.sort(comparator);
         
         for (var task : this.taskList) {
             System.out.println(task);
         }
     }
     
-    public void listTasksTags() {
+    public void listTasksTags(Comparator<Task> comparator) {
         if(isEmpty()) return;
         
-        System.out.println("Lista de Tarefas com Tags:");
+        System.out.println("\nLista de Tarefas com Tags:");
         
-        this.taskList.sort(null);
+        this.taskList.sort(comparator);
         
         for (var task : this.taskList) {
             System.out.println(task.toStringTags());
@@ -176,7 +205,7 @@ public class TaskService {
         if(isEmpty()) return;
         
         if(taskList.size() < 5) {
-            listTasks();
+            listTasks(null);
             return;
         }
         
@@ -205,6 +234,11 @@ public class TaskService {
                         () -> System.out
                                 .println("Esta tarefa nao existe!"));
     }
+    
+    // Comparator
+    Comparator<Task> alphabeticalSorting = 
+            (t1, t2) -> t1.getDescription()
+                    .compareToIgnoreCase(t2.getDescription());
     
     // Repository
     public boolean save() {

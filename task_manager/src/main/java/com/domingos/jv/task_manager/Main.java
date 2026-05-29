@@ -2,6 +2,7 @@ package com.domingos.jv.task_manager;
 
 import com.domingos.jv.task_manager.enums.EditOperation;
 import static com.domingos.jv.task_manager.enums.EditOperation.NAME;
+import com.domingos.jv.task_manager.enums.ListingType;
 import com.domingos.jv.task_manager.enums.Operations;
 import static com.domingos.jv.task_manager.enums.Operations.CREATE;
 import static com.domingos.jv.task_manager.enums.Operations.EDIT;
@@ -10,6 +11,7 @@ import static com.domingos.jv.task_manager.enums.Operations.FINISH;
 import static com.domingos.jv.task_manager.enums.Operations.INVALID;
 import static com.domingos.jv.task_manager.enums.Operations.LIST;
 import static com.domingos.jv.task_manager.enums.Operations.REMOVE;
+import com.domingos.jv.task_manager.enums.SortingType;
 import com.domingos.jv.task_manager.enums.TaskStatus;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
@@ -257,7 +259,7 @@ public class Main {
             case NAME -> {
                 System.out.println("\n--Editar nome");
                 
-                taskService.listTasks();
+                taskService.listTasks(null);
                 long id = readTask("editar o nome");
                 
                 taskService.printTask(id);
@@ -276,7 +278,7 @@ public class Main {
             case ADD_TAG -> {
                 System.out.println("\n--Adicionar Tag");
                 
-                taskService.listTasksTags();
+                taskService.listTasksTags(null);
                 long id = readTask("adicionar tags");
                 
                 taskService.printTaskTags(id);
@@ -294,7 +296,7 @@ public class Main {
             case REMOVE_TAG -> {
                 System.out.println("\n--Remover Tag");
                 
-                taskService.listTasksTags();
+                taskService.listTasksTags(null);
                 long id = readTask("remover tags");
                 
                 taskService.printTaskTags(id);
@@ -319,7 +321,40 @@ public class Main {
     static void listTasks() {
         System.out.println("\n-------- Lista");
         
-        taskService.listTasks();
+        ListingType typeListing;
+        SortingType typeSorting;
+        
+        do {
+            System.out.println("\n---Qual listagem deseja realizar?");
+            System.out.println("1 - Listagem Simples");
+            System.out.println("2 - Listagem Completa");
+            
+            System.out.print("\nDigite o numero: ");
+            String res = scanner.nextLine();
+            
+            typeListing = ListingType.fromCode(readInt(res));
+            
+            if(typeListing == ListingType.INVALID) invalidPrint();
+            
+        } while(typeListing == ListingType.INVALID);
+        
+        do {
+            System.out.println("\n---Qual orgenacao deseja realizar?");
+            System.out.println("1 - Ordenacao Data Adicao");
+            System.out.println("2 - Ordenacao Data Adicao Decrescente");
+            System.out.println("3 - Ordenacao Alfabetica");
+            System.out.println("4 - Ordenacao Alfabetica Decrescente");
+            
+            System.out.print("\nDigite o numero: ");
+            String res = scanner.nextLine();
+            
+            typeSorting = SortingType.fromCode(readInt(res));
+            
+            if(typeSorting == SortingType.INVALID) invalidPrint();
+            
+        } while(typeSorting == SortingType.INVALID);
+        
+        taskService.list(typeListing, typeSorting);
         
         pause();
     }
@@ -327,7 +362,7 @@ public class Main {
     static void finishTask() {
         System.out.println("\n-------- Finalizar tarefa");
         
-        taskService.listTasks();
+        taskService.listTasks(null);
         
         long id = readTask("finalizar");
         
@@ -348,7 +383,7 @@ public class Main {
     static void removeTask() {
         System.out.println("\n-------- Remover tarefa");
         
-        taskService.listTasks();
+        taskService.listTasks(null);
         
         long id = readTask("remover");
         
