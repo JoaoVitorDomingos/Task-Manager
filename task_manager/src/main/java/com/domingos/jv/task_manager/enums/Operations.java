@@ -6,6 +6,7 @@ public enum Operations {
     REMOVE(3),
     LIST(4),
     FINISH(5),
+    FILTER(6),
     EXIT(0),
     INVALID(-1);
     

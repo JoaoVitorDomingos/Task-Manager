@@ -2,6 +2,7 @@ package com.domingos.jv.task_manager;
 
 import com.domingos.jv.task_manager.enums.EditOperation;
 import static com.domingos.jv.task_manager.enums.EditOperation.NAME;
+import com.domingos.jv.task_manager.enums.FilteringType;
 import com.domingos.jv.task_manager.enums.ListingType;
 import com.domingos.jv.task_manager.enums.Operations;
 import static com.domingos.jv.task_manager.enums.Operations.CREATE;
@@ -44,6 +45,7 @@ public class Main {
                 case CREATE -> createTask();
                 case EDIT -> editTask();
                 case LIST -> listTasks();
+                case FILTER -> filterTasks();
                 case FINISH -> finishTask();
                 case REMOVE -> removeTask();
                 case EXIT -> exit();
@@ -65,6 +67,7 @@ public class Main {
         System.out.println("3 - Remover tarefa");
         System.out.println("4 - Listar tarefas");
         System.out.println("5 - Concluir tarefa");
+        System.out.println("6 - Filtrar tarefa");
         System.out.println("0 - Sair\n");
     }
     
@@ -259,7 +262,7 @@ public class Main {
             case NAME -> {
                 System.out.println("\n--Editar nome");
                 
-                taskService.listTasks(null);
+                taskService.listTasksSorted(null);
                 long id = readTask("editar o nome");
                 
                 taskService.printTask(id);
@@ -278,7 +281,7 @@ public class Main {
             case ADD_TAG -> {
                 System.out.println("\n--Adicionar Tag");
                 
-                taskService.listTasksTags(null);
+                taskService.listTasksTagsSorted(null);
                 long id = readTask("adicionar tags");
                 
                 taskService.printTaskTags(id);
@@ -296,7 +299,7 @@ public class Main {
             case REMOVE_TAG -> {
                 System.out.println("\n--Remover Tag");
                 
-                taskService.listTasksTags(null);
+                taskService.listTasksTagsSorted(null);
                 long id = readTask("remover tags");
                 
                 taskService.printTaskTags(id);
@@ -359,10 +362,62 @@ public class Main {
         pause();
     }
     
+    static void filterTasks() {
+        System.out.println("\n-------- Filtro");
+        
+        FilteringType typeFilter;
+        
+        do {
+            System.out.println("\n---Qual filtro deseja realizar?");
+            System.out.println("1 - Tarefas concluidas");
+            System.out.println("2 - Tarefas nao concluidas");
+            System.out.println("3 - Nome");
+            System.out.println("4 - Tag");
+            
+            System.out.print("\nDigite o numero: ");
+            String res = scanner.nextLine();
+            
+            typeFilter = FilteringType.fromCode(readInt(res));
+            
+            if(typeFilter == FilteringType.INVALID) invalidPrint();
+            
+        } while(typeFilter == FilteringType.INVALID);
+        
+        switch (typeFilter) {
+            case NAME -> {
+                System.out.println("\n--Filtrar por nome");
+                System.out.print("Digite: ");
+                String name = scanner.nextLine();
+                
+                System.out.println("\n---Tarefas com '" + name + "'");
+                taskService.filter(typeFilter, name, null);
+            }
+            case TAG -> {
+                System.out.println("\n--Filtrar por tag");
+                System.out.print("Digite: ");
+                String tag = scanner.nextLine();
+                
+                System.out.println("\n---Tarefas que possuem a tag '"
+                        + tag + "'");
+                taskService.filter(typeFilter, null, tag);
+            }
+            case IS_FINISHED -> {
+                System.out.println("\n---Tarefas concluidas");
+                taskService.filter(typeFilter, null, null);
+            }
+            case IS_NOT_FINISHED -> {
+                System.out.println("\n---Tarefas nao concluidas");
+                taskService.filter(typeFilter, null, null);
+            }
+        }
+        
+        pause();
+    }
+    
     static void finishTask() {
         System.out.println("\n-------- Finalizar tarefa");
         
-        taskService.listTasks(null);
+        taskService.listTasksSorted(null);
         
         long id = readTask("finalizar");
         
@@ -383,7 +438,7 @@ public class Main {
     static void removeTask() {
         System.out.println("\n-------- Remover tarefa");
         
-        taskService.listTasks(null);
+        taskService.listTasksSorted(null);
         
         long id = readTask("remover");
         

@@ -1,10 +1,12 @@
 package com.domingos.jv.task_manager.service;
 
+import com.domingos.jv.task_manager.enums.FilteringType;
 import com.domingos.jv.task_manager.enums.ListingType;
 import com.domingos.jv.task_manager.enums.SortingType;
 import com.domingos.jv.task_manager.enums.TaskStatus;
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.repository.TaskRepository;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -157,27 +159,27 @@ public class TaskService {
         
         if(typeListing == ListingType.SIMPLE) {
             switch(typeSorting) {
-                case NATURAL -> listTasks(null);
+                case NATURAL -> listTasksSorted(null);
                 case DESC_NATURAL -> 
-                    listTasks(Collections.reverseOrder());
-                case ALPHABETICAL -> listTasks(alphabeticalSorting);
+                    listTasksSorted(Collections.reverseOrder());
+                case ALPHABETICAL -> listTasksSorted(alphabeticalSorting);
                 case DESC_ALPHABETICAL -> 
-                    listTasks(Collections.reverseOrder(alphabeticalSorting));
+                    listTasksSorted(Collections.reverseOrder(alphabeticalSorting));
             }
             
         } else {
             switch(typeSorting) {
-                case NATURAL -> listTasksTags(null);
+                case NATURAL -> listTasksTagsSorted(null);
                 case DESC_NATURAL -> 
-                    listTasksTags(Collections.reverseOrder());
-                case ALPHABETICAL -> listTasksTags(alphabeticalSorting);
+                    listTasksTagsSorted(Collections.reverseOrder());
+                case ALPHABETICAL -> listTasksTagsSorted(alphabeticalSorting);
                 case DESC_ALPHABETICAL -> 
-                    listTasksTags(Collections.reverseOrder(alphabeticalSorting));
+                    listTasksTagsSorted(Collections.reverseOrder(alphabeticalSorting));
             }
         }
     }
     
-    public void listTasks(Comparator<Task> comparator) {
+    public void listTasksSorted(Comparator<Task> comparator) {
         if(isEmpty()) return;
         
         System.out.println("\nLista de Tarefas:");
@@ -189,7 +191,15 @@ public class TaskService {
         }
     }
     
-    public void listTasksTags(Comparator<Task> comparator) {
+    public void listFilteredTasks(List<Task> filteredList) {
+        if(filteredList.isEmpty()) System.out.println("Lista vazia!");
+        
+        for (var task : filteredList) {
+            System.out.println(task);
+        }
+    }
+    
+    public void listTasksTagsSorted(Comparator<Task> comparator) {
         if(isEmpty()) return;
         
         System.out.println("\nLista de Tarefas com Tags:");
@@ -201,11 +211,19 @@ public class TaskService {
         }
     }
     
+    public void listFilteredTasksTags(List<Task> filteredList) {
+        if(filteredList.isEmpty()) System.out.println("Lista vazia!");
+        
+        for (var task : filteredList) {
+            System.out.println(task.toStringTags());
+        }
+    }
+    
     public void listTop5Tasks() {
         if(isEmpty()) return;
         
         if(taskList.size() < 5) {
-            listTasks(null);
+            listTasksSorted(null);
             return;
         }
         
@@ -233,6 +251,37 @@ public class TaskService {
                 .ifPresentOrElse(task -> task.toStringTags(), 
                         () -> System.out
                                 .println("Esta tarefa nao existe!"));
+    }
+    
+    // Filters
+    public void filter(FilteringType typeFilter, String search, String tag) {
+        List<Task> filteredList = new ArrayList<>();
+        
+        switch(typeFilter) {
+            case IS_FINISHED -> filteredList = this.taskList.stream()
+                    .filter(Task::isFinished)
+                    .sorted()
+                    .toList();
+            case IS_NOT_FINISHED -> filteredList = this.taskList.stream()
+                    .filter((task) -> !task.isFinished())
+                    .sorted()
+                    .toList();
+            case NAME -> filteredList = this.taskList.stream()
+                    .filter((task) -> task.getDescription().toLowerCase()
+                            .contains(search.toLowerCase()))
+                    .sorted()
+                    .toList();
+            case TAG -> filteredList = this.taskList.stream()
+                    .filter((task) -> task.getTags()
+                            .contains(tag.toLowerCase()))
+                    .sorted()
+                    .toList();
+        }
+        
+        if(typeFilter == FilteringType.TAG) 
+            listFilteredTasksTags(filteredList);
+        else 
+            listFilteredTasks(filteredList);
     }
     
     // Comparator
