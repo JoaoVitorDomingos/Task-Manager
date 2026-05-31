@@ -99,10 +99,12 @@ public class TaskService {
                 .orElseGet(() -> TaskStatus.NOT_FOUND);
     }
     
-    boolean isEmpty() {
+    public boolean isEmpty() {
         if(taskList.isEmpty()) {
+            System.out.println("\n==========================");
             System.out.println("Voce nao possui nenhuma tarefa"
                     + " no momento!");
+            System.out.println("==========================");
             return true;
         } else return false;
     }

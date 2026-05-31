@@ -43,11 +43,26 @@ public class Main {
 
             switch(op) {
                 case CREATE -> createTask();
-                case EDIT -> editTask();
-                case LIST -> listTasks();
-                case FILTER -> filterTasks();
-                case FINISH -> finishTask();
-                case REMOVE -> removeTask();
+                case EDIT -> {
+                    if(!taskService.isEmpty()) editTask();
+                    else pause();
+                }
+                case LIST -> {
+                    if(!taskService.isEmpty()) listTasks();
+                    else pause();
+                }
+                case FILTER -> {
+                    if(!taskService.isEmpty()) filterTasks();
+                    else pause();
+                }
+                case FINISH -> {
+                    if(!taskService.isEmpty()) finishTask();
+                    else pause();
+                }
+                case REMOVE -> {
+                    if(!taskService.isEmpty()) removeTask();
+                    else pause();
+                }
                 case EXIT -> exit();
                 case INVALID -> invalidPrint();
             }
