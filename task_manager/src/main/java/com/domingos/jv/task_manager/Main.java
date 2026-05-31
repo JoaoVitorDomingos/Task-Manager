@@ -277,10 +277,10 @@ public class Main {
             case NAME -> {
                 System.out.println("\n--Editar nome");
                 
-                taskService.listTasksSorted(null);
+                taskService.listTasks(null, null, false);
                 long id = readTask("editar o nome");
                 
-                taskService.printTask(id);
+                taskService.printTask(id, false);
                 System.out.print("Digite o novo nome: ");
                 String newName = scanner.nextLine();
                 
@@ -296,10 +296,10 @@ public class Main {
             case ADD_TAG -> {
                 System.out.println("\n--Adicionar Tag");
                 
-                taskService.listTasksTagsSorted(null);
+                taskService.listTasks(null, null, true);
                 long id = readTask("adicionar tags");
                 
-                taskService.printTaskTags(id);
+                taskService.printTask(id, true);
                 List<String> newTagas = readTag();
                 
                 TaskStatus status = taskService.addTags(id, 
@@ -314,10 +314,10 @@ public class Main {
             case REMOVE_TAG -> {
                 System.out.println("\n--Remover Tag");
                 
-                taskService.listTasksTagsSorted(null);
+                taskService.listTasks(null, null, true);
                 long id = readTask("remover tags");
                 
-                taskService.printTaskTags(id);
+                taskService.printTask(id, true);
                 List<String> tagsToRemove = readTag();
                 
                 TaskStatus status = taskService.removeTags(id, 
@@ -432,12 +432,12 @@ public class Main {
     static void finishTask() {
         System.out.println("\n-------- Finalizar tarefa");
         
-        taskService.listTasksSorted(null);
+        taskService.listTasks(null, null, true);
         
         long id = readTask("finalizar");
         
         System.out.println("\n--Voce deseja concluir a seguinte tarefa?");
-        taskService.printTask(id);
+        taskService.printTask(id, true);
         
         String res = readYesNo();
         
@@ -453,12 +453,12 @@ public class Main {
     static void removeTask() {
         System.out.println("\n-------- Remover tarefa");
         
-        taskService.listTasksSorted(null);
+        taskService.listTasks(null, null, true);
         
         long id = readTask("remover");
         
         System.out.println("\n--Voce realmente deseja remover esta tarefa?");
-        taskService.printTask(id);
+        taskService.printTask(id, true);
         
         String res = readYesNo();
         
