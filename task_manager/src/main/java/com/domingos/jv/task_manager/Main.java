@@ -14,6 +14,7 @@ import static com.domingos.jv.task_manager.enums.Operations.LIST;
 import static com.domingos.jv.task_manager.enums.Operations.REMOVE;
 import com.domingos.jv.task_manager.enums.SortingType;
 import com.domingos.jv.task_manager.enums.TaskStatus;
+import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -164,7 +165,7 @@ public class Main {
         return res;
     }
     
-    static long readTask(String operation) {
+    static long readTask(String operation, List<Task> list) {
         long id;
         boolean exist;
         
@@ -172,7 +173,10 @@ public class Main {
             System.out.println("\n--Qual tarefa deseja " + operation + "?");
             id = readValidLong();
 
-            exist = taskService.existTask(id);
+            if(list == null)
+                exist = taskService.existTask(id);
+            else 
+                exist = taskService.existTask(id, list);
 
             if(!exist) {
                 System.err.println("\n===========================");
@@ -278,7 +282,8 @@ public class Main {
                 System.out.println("\n--Editar nome");
                 
                 taskService.listTasks(null, null, false);
-                long id = readTask("editar o nome");
+                
+                long id = readTask("editar o nome", null);
                 
                 taskService.printTask(id, false);
                 System.out.print("Digite o novo nome: ");
@@ -297,7 +302,8 @@ public class Main {
                 System.out.println("\n--Adicionar Tag");
                 
                 taskService.listTasks(null, null, true);
-                long id = readTask("adicionar tags");
+                
+                long id = readTask("adicionar tags", null);
                 
                 taskService.printTask(id, true);
                 List<String> newTagas = readTag();
@@ -315,7 +321,8 @@ public class Main {
                 System.out.println("\n--Remover Tag");
                 
                 taskService.listTasks(null, null, true);
-                long id = readTask("remover tags");
+                
+                long id = readTask("remover tags", null);
                 
                 taskService.printTask(id, true);
                 List<String> tagsToRemove = readTag();
@@ -432,9 +439,11 @@ public class Main {
     static void finishTask() {
         System.out.println("\n-------- Finalizar tarefa");
         
-        taskService.listTasks(null, null, true);
+        //taskService.listTasks(null, null, true);
+        List<Task> filteredList = taskService.filter(
+                FilteringType.IS_NOT_FINISHED, null, null);
         
-        long id = readTask("finalizar");
+        long id = readTask("finalizar", filteredList);
         
         System.out.println("\n--Voce deseja concluir a seguinte tarefa?");
         taskService.printTask(id, true);
@@ -455,7 +464,7 @@ public class Main {
         
         taskService.listTasks(null, null, true);
         
-        long id = readTask("remover");
+        long id = readTask("remover", null);
         
         System.out.println("\n--Voce realmente deseja remover esta tarefa?");
         taskService.printTask(id, true);

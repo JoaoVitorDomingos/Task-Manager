@@ -87,6 +87,14 @@ public class TaskService {
         return find(id).isPresent();
     }
     
+    public boolean existTask(long id, List<Task> list) {
+        for(var task : list) {
+            if(task.getId() == id) return true;
+        }
+        
+        return false;
+    }
+    
     public TaskStatus removeTask(long id) {
         return find(id)
                 .map(task -> {
@@ -222,7 +230,9 @@ public class TaskService {
     }
     
     // Filters
-    public void filter(FilteringType typeFilter, String search, String tag) {
+    public List<Task> filter(FilteringType typeFilter, 
+            String search, String tag) {
+        
         List<Task> filteredList;
         
         Predicate<Task> predicate = null;
@@ -247,6 +257,8 @@ public class TaskService {
             printTag = true;
         
         listTasks(filteredList, null, printTag);
+        
+        return filteredList;
     }
     
     // Comparator
