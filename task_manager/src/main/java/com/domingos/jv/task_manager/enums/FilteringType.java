@@ -5,6 +5,7 @@ public enum FilteringType {
     IS_NOT_FINISHED(2),
     NAME(3),
     TAG(4),
+    CANCEL(0),
     INVALID(-1);
     
     final int code;

@@ -14,6 +14,7 @@ import static com.domingos.jv.task_manager.enums.Operations.LIST;
 import static com.domingos.jv.task_manager.enums.Operations.REMOVE;
 import com.domingos.jv.task_manager.enums.SortingType;
 import com.domingos.jv.task_manager.enums.TaskStatus;
+import com.domingos.jv.task_manager.enums.YesNo;
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
@@ -148,21 +149,25 @@ public class Main {
         return number;
     }
     
-    static String readYesNo() {
+    static YesNo readYesNo() {
         String res;
+        YesNo resEnum;
+        
         do {
+            System.out.println("-> Deixe em branco para "
+                    + "cancelar toda a operacao");
             System.out.print("(Y/N): ");
             res = scanner.nextLine().trim();
             
-            if(!res.equalsIgnoreCase("Y") 
-                && !res.equalsIgnoreCase("N"))
+            resEnum = YesNo.fromCode(res);
+            
+            if(resEnum == YesNo.INVALID)
                 System.err.println("\n--\n"
                         + "Digite apenas Y (Sim) ou N (Nao)");
             
-        } while(!res.equalsIgnoreCase("Y") 
-                && !res.equalsIgnoreCase("N"));
+        } while(resEnum == YesNo.INVALID);
         
-        return res;
+        return resEnum;
     }
     
     static long readTask(String operation, List<Task> list) {
@@ -171,7 +176,10 @@ public class Main {
         
         do {
             System.out.println("\n--Qual tarefa deseja " + operation + "?");
+            System.out.println("-> Digite 0 para cancelar!");
             id = readValidLong();
+            
+            if(id == 0) return id;
 
             if(list == null)
                 exist = taskService.existTask(id);
@@ -213,6 +221,14 @@ public class Main {
         scanner.nextLine();
     }
     
+    static void cancel() {
+        System.out.println("\n=====================");
+        System.out.println("Operacao cancelada!");
+        System.out.println("=====================");
+
+        pause();
+    }
+    
     static void pauseTime(int time) {
         try {
             Thread.sleep(time);
@@ -240,20 +256,34 @@ public class Main {
     static void createTask() {
         System.out.println("\n-------- Criacao de tarefa");
         
+        System.out.println("-> Deixe em branco para cancelar!");
         System.out.print("Digite o nome da tarefa: ");
         String nome = scanner.nextLine();
+        
+        if(nome.trim().isEmpty()) {
+            cancel();
+            return;
+        }
         
         System.out.println("\n--\nVoce quer adicionar tags na tarefa?");
         System.out.println("Obs: tags servem para filtrar as terefas");
         
-        String res = readYesNo();
+        YesNo res = readYesNo();
         
         HashSet<String> tags = new HashSet<>();
         
-        if(res.equalsIgnoreCase("Y"))
+        if(res == YesNo.YES)
             tags.addAll(readTag());
+        else if(res == YesNo.CANCEL) {
+            cancel();
+            return;
+        }
         
-        taskService.addTask(nome, tags);
+        long newID = taskService.addTask(nome, tags);
+        
+        System.out.println("\n-- Tarefa criada com sucesso");
+        taskService.printTask(newID, true);
+        pause();
     }
     
     static void editTask() {
@@ -285,9 +315,22 @@ public class Main {
                 
                 long id = readTask("editar o nome", null);
                 
+                if(id == 0) {
+                    cancel();
+                    return;
+                }
+                
+                System.out.println();
                 taskService.printTask(id, false);
+                
+                System.out.println("-> Deixe em branco para cancelar!");
                 System.out.print("Digite o novo nome: ");
                 String newName = scanner.nextLine();
+                
+                if(newName.trim().isEmpty()) {
+                    cancel();
+                    return;
+                }
                 
                 TaskStatus status = taskService
                         .editTaskDescription(id, newName);
@@ -305,7 +348,14 @@ public class Main {
                 
                 long id = readTask("adicionar tags", null);
                 
+                if(id == 0) {
+                    cancel();
+                    return;
+                }
+                
+                System.out.println();
                 taskService.printTask(id, true);
+                
                 List<String> newTagas = readTag();
                 
                 TaskStatus status = taskService.addTags(id, 
@@ -324,7 +374,14 @@ public class Main {
                 
                 long id = readTask("remover tags", null);
                 
+                if(id == 0) {
+                    cancel();
+                    return;
+                }
+                
+                System.out.println();
                 taskService.printTask(id, true);
+                
                 List<String> tagsToRemove = readTag();
                 
                 TaskStatus status = taskService.removeTags(id, 
@@ -353,6 +410,7 @@ public class Main {
             System.out.println("\n---Qual listagem deseja realizar?");
             System.out.println("1 - Listagem Simples");
             System.out.println("2 - Listagem Completa");
+            System.out.println("0 - Cancelar");
             
             System.out.print("\nDigite o numero: ");
             String res = scanner.nextLine();
@@ -363,12 +421,18 @@ public class Main {
             
         } while(typeListing == ListingType.INVALID);
         
+        if(typeListing == ListingType.CANCEL) {
+            cancel();
+            return;
+        }
+        
         do {
             System.out.println("\n---Qual orgenacao deseja realizar?");
             System.out.println("1 - Ordenacao Data Adicao");
             System.out.println("2 - Ordenacao Data Adicao Decrescente");
             System.out.println("3 - Ordenacao Alfabetica");
             System.out.println("4 - Ordenacao Alfabetica Decrescente");
+            System.out.println("0 - Cancelar");
             
             System.out.print("\nDigite o numero: ");
             String res = scanner.nextLine();
@@ -378,6 +442,11 @@ public class Main {
             if(typeSorting == SortingType.INVALID) invalidPrint();
             
         } while(typeSorting == SortingType.INVALID);
+        
+        if(typeSorting == SortingType.CANCEL) {
+            cancel();
+            return;
+        }
         
         taskService.list(typeListing, typeSorting);
         
@@ -395,6 +464,7 @@ public class Main {
             System.out.println("2 - Tarefas nao concluidas");
             System.out.println("3 - Nome");
             System.out.println("4 - Tag");
+            System.out.println("0 - Cancelar");
             
             System.out.print("\nDigite o numero: ");
             String res = scanner.nextLine();
@@ -408,16 +478,29 @@ public class Main {
         switch (typeFilter) {
             case NAME -> {
                 System.out.println("\n--Filtrar por nome");
+                System.out.println("\n-> Deixe em branco para cancelar!");
                 System.out.print("Digite: ");
                 String name = scanner.nextLine();
+                
+                if(name.trim().isEmpty()) {
+                    cancel();
+                    return;
+                }
                 
                 System.out.println("\n---Tarefas com '" + name + "'");
                 taskService.filter(typeFilter, name, null);
             }
             case TAG -> {
                 System.out.println("\n--Filtrar por tag");
+                System.out.println("-> Deixe em branco para"
+                        + "cancelar toda a operacao!");
                 System.out.print("Digite: ");
                 String tag = scanner.nextLine();
+                
+                if(tag.trim().isEmpty()) {
+                    cancel();
+                    return;
+                }
                 
                 System.out.println("\n---Tarefas que possuem a tag '"
                         + tag + "'");
@@ -430,6 +513,10 @@ public class Main {
             case IS_NOT_FINISHED -> {
                 System.out.println("\n---Tarefas nao concluidas");
                 taskService.filter(typeFilter, null, null);
+            }
+            case CANCEL -> {
+                cancel();
+                return;
             }
         }
         
@@ -445,16 +532,22 @@ public class Main {
         
         long id = readTask("finalizar", filteredList);
         
+        if(id == 0) {
+            cancel();
+            return;
+        }
+        
         System.out.println("\n--Voce deseja concluir a seguinte tarefa?");
         taskService.printTask(id, true);
         
-        String res = readYesNo();
+        YesNo res = readYesNo();
         
-        if(res.equalsIgnoreCase("Y")) {
+        if(res == YesNo.YES) {
             taskService.completeTask(id);
             
             System.out.println("\n--Tarefa finalizada!");
-        } else System.out.println("\n--Tarefa nao foi concluida.");
+        } else
+            System.out.println("\n--Tarefa nao foi concluida.");
         
         pause();
     }
@@ -466,12 +559,17 @@ public class Main {
         
         long id = readTask("remover", null);
         
+        if(id == 0) {
+            cancel();
+            return;
+        }
+        
         System.out.println("\n--Voce realmente deseja remover esta tarefa?");
         taskService.printTask(id, true);
         
-        String res = readYesNo();
+        YesNo res = readYesNo();
         
-        if(res.equalsIgnoreCase("Y")) {
+        if(res == YesNo.YES) {
             taskService.removeTask(id);
             
             System.out.println("\n--Tarefa removida com sucesso");

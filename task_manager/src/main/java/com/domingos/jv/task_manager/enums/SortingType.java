@@ -5,6 +5,7 @@ public enum SortingType {
     DESC_NATURAL(2),
     ALPHABETICAL(3),
     DESC_ALPHABETICAL(4),
+    CANCEL(0),
     INVALID(-1);
 
     private final int code;

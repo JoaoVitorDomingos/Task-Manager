@@ -63,11 +63,13 @@ public class TaskService {
     }
     
     // Service
-    public void addTask(String description, HashSet<String> tags) {
+    public long addTask(String description, HashSet<String> tags) {
         Task newTask = new Task(nextID++, description, tags);
         
         taskList.addLast(newTask);
         taskMap.put(newTask.getId(), newTask);
+        
+        return newTask.getId();
     }
     
     public void addTask(String description) {
@@ -223,8 +225,9 @@ public class TaskService {
     public void printTask(long id, boolean printTag) {
         find(id)
                 .ifPresentOrElse(
-                        (printTag ? Task::toStringTags 
-                                : System.out::println), 
+                        (printTag ? task -> 
+                                System.out.println(task.toStringTags()) 
+                            : System.out::println), 
                         () -> System.out.
                                 println("Esta tarefa nao existe!"));
     }
