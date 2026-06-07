@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="#sobre">Sobre</a> • 
-  <a href="#acesso">Como Executar</a> • 
+  <a href="#como_executar">Como Executar</a> • 
   <a href="#objetivo">Objetivo de Aprendizado</a> • 
   <a href="#detalhamento">Detalhamento</a> • 
   <a href="#melhorias">Próximas Melhorias</a> •
@@ -40,7 +40,7 @@ Este projeto foi criado com o objetivo de consolidar conhecimentos fundamentais 
 
 <br>
 
-<h2 id="como-executar">▶️ Como Executar</h2>
+<h2 id="como_executar">▶️ Como Executar</h2>
 
 ### ⚙️ Pré-requisitos
 
