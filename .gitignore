@@ -24,5 +24,8 @@ hs_err_pid*
 replay_pid*
 /task_manager/target/
 
+# config Netbeans
+nbactions.xml
+
 # Arquivos
 task_manager/repository/
