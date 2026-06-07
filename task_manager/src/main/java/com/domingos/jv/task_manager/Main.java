@@ -18,11 +18,9 @@ import com.domingos.jv.task_manager.enums.YesNo;
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Main {
     

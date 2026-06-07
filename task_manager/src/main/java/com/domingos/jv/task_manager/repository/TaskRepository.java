@@ -32,7 +32,7 @@ public class TaskRepository {
 
             if (!Files.exists(directory)) {
                 Files.createDirectories(directory);
-                System.out.println("Diretrio criado!");
+                //System.out.println("Diretrio criado!");
             }
 
             filePath = directory.resolve(fileName);
@@ -40,10 +40,10 @@ public class TaskRepository {
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
                 isFileCreated = true;
-                System.out.println("Arquivo criado!");
+                //System.out.println("Arquivo criado!");
             } else {
                 isFileCreated = false;
-                System.out.println("Arquivo ja existe!");
+                //System.out.println("Arquivo ja existe!");
             }
             
         } catch (IOException ex) {
@@ -89,13 +89,14 @@ public class TaskRepository {
             String line = reader.readLine();
             
             while(line != null) {
-                System.out.println("linha: " + line);
+                //System.out.println("linha: " + line);
                 
                 String[] values = line.split(";");
                 
+                /*
                 for (var v : values) {
                     System.out.println(v);
-                }
+                }*/
                 
                 taskList.add(criarTask(values));
                 
@@ -126,14 +127,14 @@ public class TaskRepository {
             String[] tags = tagsString.split(",");
             
             for (var tag : tags) {
-                System.out.println("Tag: " + tag.trim());
+                //System.out.println("Tag: " + tag.trim());
                 t.adicionarTag(tag.trim());
             }
-        } else System.out.println("Nao tem tags!");
+        } //else System.out.println("Nao tem tags!");
         
         boolean status = Boolean.parseBoolean(values[3]);
         
-        System.out.println("Conclusao: " + status);
+        //System.out.println("Conclusao: " + status);
         
         t.setFinished(status);
         
