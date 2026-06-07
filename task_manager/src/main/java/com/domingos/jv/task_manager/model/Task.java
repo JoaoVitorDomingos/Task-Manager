@@ -8,18 +8,18 @@ import java.util.Set;
 */
 
 public class Task implements Comparable<Task> {
-    Long id;
+    private Long id;
     
-    String description;
+    private String description;
     
-    boolean Finished;
+    private boolean finished;
     
-    Set<String> tags;
+    private Set<String> tags;
 
     public Task(long id, String description) {
         this.description = description;
         
-        this.Finished = false;
+        this.finished = false;
         
         this.tags = new HashSet<>();
         
@@ -29,7 +29,7 @@ public class Task implements Comparable<Task> {
     public Task(long id, String description, HashSet<String> tags) {
         this.description = description;
         
-        this.Finished = false;
+        this.finished = false;
         
         setTags(tags);
         
@@ -52,7 +52,7 @@ public class Task implements Comparable<Task> {
     @Override
     public String toString() {
         return id + " - " + description
-                + (Finished ? " (Finalizada)" : " (Nao finalizada)");
+                + (finished ? " (Finalizada)" : " (Nao finalizada)");
     }
     
     public String toStringTags() {
@@ -79,11 +79,11 @@ public class Task implements Comparable<Task> {
     }
 
     public boolean isFinished() {
-        return Finished;
+        return finished;
     }
 
     public void setFinished(boolean isFinished) {
-        this.Finished = isFinished;
+        this.finished = isFinished;
     }
 
     public Set<String> getTags() {
@@ -97,6 +97,6 @@ public class Task implements Comparable<Task> {
     // Comparable
     @Override
     public int compareTo(Task o) {
-        return (int) (this.id - o.getId());
+        return Long.compare(this.id, o.getId());
     }
 }

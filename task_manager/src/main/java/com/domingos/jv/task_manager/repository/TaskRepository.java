@@ -18,15 +18,13 @@ import java.util.List;
 */
 public class TaskRepository {
 
-    String dirPath = "repository";
-    String fileName = "data.txt";
+    private String dirPath = "repository";
+    private String fileName = "data.txt";
 
-    Path directory;
-    Path filePath;
+    private Path directory;
+    private Path filePath;
 
-    boolean isFileCreated;
-    
-    //static long countID;
+    private boolean isFileCreated;
 
     public TaskRepository() {
         try {

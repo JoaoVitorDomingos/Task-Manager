@@ -23,12 +23,12 @@ import java.util.function.Predicate;
 */
 
 public class TaskService {
-    List<Task> taskList;
-    Map<Long, Task> taskMap;
+    private List<Task> taskList;
+    private Map<Long, Task> taskMap;
     
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
     
-    long nextID;
+    private long nextID;
 
     public TaskService() {
         this.taskRepository = new TaskRepository();
@@ -41,13 +41,13 @@ public class TaskService {
         this.nextID = getMaxId() + 1;
     }
     
-    void carregarMap() {
+    private void carregarMap() {
         for (var task : this.taskList) {
             this.taskMap.put(task.getId(), task);
         }
     }
     
-    long getMaxId() {
+    private long getMaxId() {
         if(taskList.isEmpty()) return 0;
         
         long max = taskList.getFirst().getId();
@@ -79,7 +79,7 @@ public class TaskService {
         taskMap.put(newTask.getId(), newTask);
     }
     
-    Optional<Task> find(long id) {
+    private Optional<Task> find(long id) {
         Task task = taskMap.get(id);
         
         return Optional.ofNullable(task);
@@ -265,7 +265,7 @@ public class TaskService {
     }
     
     // Comparator
-    Comparator<Task> alphabeticalSorting = 
+    private static final Comparator<Task> alphabeticalSorting = 
             (t1, t2) -> t1.getDescription()
                     .compareToIgnoreCase(t2.getDescription());
     
