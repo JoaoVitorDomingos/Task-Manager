@@ -46,7 +46,7 @@ Este projeto foi criado com o objetivo de consolidar conhecimentos fundamentais 
 
 Para executar o projeto é necessário possuir:
 
-- Java 21 ou superior
+- [Java 21 ou superior](https://www.oracle.com/br/java/technologies/downloads/)
 
 Verifique sua versão instalada:
 
@@ -56,7 +56,7 @@ java --version
 
 ### Executando uma Release
 
-Baixe o arquivo `.jar` da última release disponível.
+Baixe o arquivo `.jar` da última release disponível ([clique aqui](https://github.com/JoaoVitorDomingos/Task-Manager/releases)).
 
 Execute:
 
@@ -98,18 +98,9 @@ java -jar target/task-manager-1.0.0.jar
 
 ### 📦 Releases
 
-As versões estáveis do projeto são disponibilizadas na área de Releases do GitHub.
+As versões estáveis do projeto são disponibilizadas na área de Releases do GitHub ([clique aqui](https://github.com/JoaoVitorDomingos/Task-Manager/releases)).
 
-#### v1.0.0
-
-Primeira versão estável contendo:
-
-- CRUD de tarefas
-- Sistema de tags
-- Persistência em arquivo
-- Busca por ID
-- Filtros
-- Ordenação
+Para consultar o histórico completo de alterações entre as versões, veja o arquivo [`CHANGELOG.md`](./CHANGELOG.md).
 
 <br>
 
