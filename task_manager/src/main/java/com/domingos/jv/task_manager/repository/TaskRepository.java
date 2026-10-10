@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class TaskRepository {
     private Path filePath;
 
     private boolean isFileCreated;
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH:mm:ss");
 
     public TaskRepository() {
         try {
@@ -59,6 +63,7 @@ public class TaskRepository {
             for (var task : taskList) {
                 String s = task.getId() + ";" 
                         + task.getDescription() + ";"
+                        + task.getDateCreated().format(formatter) + ";"
                         + task.getTags() + ";"
                         + task.isFinished();
                 
@@ -116,11 +121,15 @@ public class TaskRepository {
         String description = values[1];
         
         Task t = new Task(id, description);
+
+        String d = values[2];
+        System.out.println("Data de criacao: " + d);
+        t.setDateCreated(LocalDateTime.parse(d, formatter));
         
-        int tamTags = values[2].length();
+        int tamTags = values[3].length();
         
         String tagsString = 
-                values[2].substring(1, tamTags - 1);
+                values[3].substring(1, tamTags - 1);
         
         if(!tagsString.isEmpty()) {
             String[] tags = tagsString.split(",");
@@ -131,7 +140,7 @@ public class TaskRepository {
             }
         } else System.out.println("Nao tem tags!");
         
-        boolean status = Boolean.parseBoolean(values[3]);
+        boolean status = Boolean.parseBoolean(values[4]);
         
         System.out.println("Conclusao: " + status);
         

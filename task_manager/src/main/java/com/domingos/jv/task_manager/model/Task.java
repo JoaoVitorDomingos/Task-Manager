@@ -1,5 +1,7 @@
 package com.domingos.jv.task_manager.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,13 +15,19 @@ public class Task implements Comparable<Task> {
     private String description;
     
     private boolean finished;
-    
+
+    private LocalDateTime dateCreated;
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     private Set<String> tags;
 
     public Task(long id, String description) {
         this.description = description;
         
         this.finished = false;
+
+        this.dateCreated = LocalDateTime.now();
         
         this.tags = new HashSet<>();
         
@@ -30,6 +38,8 @@ public class Task implements Comparable<Task> {
         this.description = description;
         
         this.finished = false;
+
+        this.dateCreated = LocalDateTime.now();
         
         setTags(tags);
         
@@ -51,7 +61,7 @@ public class Task implements Comparable<Task> {
     // toString's
     @Override
     public String toString() {
-        return id + " - " + description
+        return id + " - " + description + " - " + dateCreated.format(formatter)
                 + (finished ? " (Finalizada)" : " (Nao finalizada)");
     }
     
@@ -86,6 +96,12 @@ public class Task implements Comparable<Task> {
         this.finished = isFinished;
     }
 
+    public LocalDateTime getDateCreated() {return dateCreated;}
+
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public Set<String> getTags() {
         return tags;
     }
@@ -97,6 +113,6 @@ public class Task implements Comparable<Task> {
     // Comparable
     @Override
     public int compareTo(Task o) {
-        return Long.compare(this.id, o.getId());
+        return this.dateCreated.compareTo(o.getDateCreated());
     }
 }
