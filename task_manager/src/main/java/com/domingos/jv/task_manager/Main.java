@@ -1,10 +1,10 @@
 package com.domingos.jv.task_manager;
 
-import com.domingos.jv.task_manager.enums.EditOperation;
+import com.domingos.jv.task_manager.api.ApiResult;
+import com.domingos.jv.task_manager.api.TaskApiClient;
+import com.domingos.jv.task_manager.enums.*;
+
 import static com.domingos.jv.task_manager.enums.EditOperation.NAME;
-import com.domingos.jv.task_manager.enums.FilteringType;
-import com.domingos.jv.task_manager.enums.ListingType;
-import com.domingos.jv.task_manager.enums.Operations;
 import static com.domingos.jv.task_manager.enums.Operations.CREATE;
 import static com.domingos.jv.task_manager.enums.Operations.EDIT;
 import static com.domingos.jv.task_manager.enums.Operations.EXIT;
@@ -12,9 +12,7 @@ import static com.domingos.jv.task_manager.enums.Operations.FINISH;
 import static com.domingos.jv.task_manager.enums.Operations.INVALID;
 import static com.domingos.jv.task_manager.enums.Operations.LIST;
 import static com.domingos.jv.task_manager.enums.Operations.REMOVE;
-import com.domingos.jv.task_manager.enums.SortingType;
-import com.domingos.jv.task_manager.enums.TaskStatus;
-import com.domingos.jv.task_manager.enums.YesNo;
+
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
@@ -65,6 +63,10 @@ public class Main {
                     if(!taskService.isEmpty()) removeTask();
                     else pause();
                 }
+                case IDEA -> {
+                    if(!taskService.isEmpty()) getRandomTask();
+                    else pause();
+                }
                 case EXIT -> exit();
                 case INVALID -> invalidPrint();
             }
@@ -85,6 +87,7 @@ public class Main {
         System.out.println("4 - Listar tarefas");
         System.out.println("5 - Concluir tarefa");
         System.out.println("6 - Filtrar tarefa");
+        System.out.println("7 - Obter ideia de tarefa");
         System.out.println("0 - Sair\n");
     }
     
@@ -579,6 +582,64 @@ public class Main {
             System.out.println("\n--Operacao cancelada!");
             pause();
         }
+    }
+
+    static void getRandomTask() {
+        YesNo op;
+
+        do {
+            System.out.println("-----Obtendo ideia...");
+
+            ApiResult<String> response = taskService.getRandomTask();
+
+            if(response.getStatus() == ApiStatus.FAILED) {
+                System.err.println("\n\n======================");
+                System.err.println(response.getErrorMessage());
+                System.err.println("======================\n");
+
+                pause();
+                return;
+            }
+
+            String task = response.getData();
+
+            System.out.println("\n--- Ideia obtida:\n -> " + task);
+            System.out.println("\nVoce aceita criar esta tarefa?\n");
+
+            op = readYesNo();
+
+            if (op == YesNo.CANCEL) {
+                cancel();
+                return;
+
+            } else if(op == YesNo.YES) {
+                long id;
+
+                System.out.println("\n-- Voce deseja adicionar tags?\n");
+
+                YesNo opTag = readYesNo();
+
+                if(opTag == YesNo.CANCEL) {
+                    cancel();
+                    return;
+                }else if(opTag == YesNo.YES) {
+                    List<String> tagsList = readTag();
+
+                    HashSet<String> tags =  new HashSet<>();
+                    tags.addAll(tagsList);
+
+                    id = taskService.addTask(task, tags);
+                } else {
+                    id = taskService.addTask(task);
+                }
+
+                System.out.println("\n-- Tarefa criada com sucesso!");
+                taskService.printTask(id, true);
+
+                pause();
+            }
+
+        } while(op == YesNo.NO);
     }
     
     static void invalidPrint() {

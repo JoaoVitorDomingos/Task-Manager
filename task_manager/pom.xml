@@ -10,4 +10,12 @@
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>com.domingos.jv.task_manager.Main</exec.mainClass>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+    </dependencies>
 </project>

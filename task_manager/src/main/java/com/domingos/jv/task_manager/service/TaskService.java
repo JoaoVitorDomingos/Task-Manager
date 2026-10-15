@@ -1,10 +1,10 @@
 package com.domingos.jv.task_manager.service;
 
-import com.domingos.jv.task_manager.enums.FilteringType;
-import com.domingos.jv.task_manager.enums.ListingType;
-import com.domingos.jv.task_manager.enums.SortingType;
-import com.domingos.jv.task_manager.enums.TaskStatus;
+import com.domingos.jv.task_manager.api.ApiResult;
+import com.domingos.jv.task_manager.api.TaskApiClient;
+import com.domingos.jv.task_manager.enums.*;
 import com.domingos.jv.task_manager.model.Task;
+import com.domingos.jv.task_manager.model.TaskApi;
 import com.domingos.jv.task_manager.repository.TaskRepository;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,11 +27,15 @@ public class TaskService {
     private Map<Long, Task> taskMap;
     
     private final TaskRepository taskRepository;
+
+    private final TaskApiClient  taskApiClient;
     
     private long nextID;
 
     public TaskService() {
         this.taskRepository = new TaskRepository();
+
+        this.taskApiClient = new TaskApiClient();
         
         this.taskList = taskRepository.load();
         
@@ -66,17 +70,19 @@ public class TaskService {
     public long addTask(String description, HashSet<String> tags) {
         Task newTask = new Task(nextID++, description, tags);
         
-        taskList.addLast(newTask);
+        taskList.add(newTask);
         taskMap.put(newTask.getId(), newTask);
         
         return newTask.getId();
     }
     
-    public void addTask(String description) {
+    public long addTask(String description) {
         Task newTask = new Task(nextID++, description);
         
         taskList.add(newTask);
         taskMap.put(newTask.getId(), newTask);
+
+        return newTask.getId();
     }
     
     private Optional<Task> find(long id) {
@@ -272,5 +278,16 @@ public class TaskService {
     // Repository
     public boolean save() {
         return taskRepository.save(taskList);
+    }
+
+    // API
+    public ApiResult<String> getRandomTask() {
+        ApiResult<TaskApi> result = taskApiClient.getRandomTask();
+
+        if(result.getStatus() == ApiStatus.SUCESS) {
+            return ApiResult.success(result.getData().getTodo());
+        }
+
+        return ApiResult.failure(result.getErrorMessage(), null);
     }
 }

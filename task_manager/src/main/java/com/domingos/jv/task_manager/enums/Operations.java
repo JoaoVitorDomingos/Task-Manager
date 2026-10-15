@@ -2,11 +2,12 @@ package com.domingos.jv.task_manager.enums;
 
 public enum Operations {
     CREATE(1),
-    EDIT(2), 
+    EDIT(2),
     REMOVE(3),
     LIST(4),
     FINISH(5),
     FILTER(6),
+    IDEA(7),
     EXIT(0),
     INVALID(-1);
     
