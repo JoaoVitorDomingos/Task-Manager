@@ -1,10 +1,15 @@
 package com.domingos.jv.task_manager.model;
 
+import java.util.List;
+
 public class TaskApi {
 
+    // DummyJson
     private String todo;
 
     private boolean completed;
+
+    private String translatedTodo;
 
     public TaskApi() {
     }
@@ -33,5 +38,11 @@ public class TaskApi {
         this.completed = completed;
     }
 
+    public String getTranslatedTodo() {
+        return translatedTodo;
+    }
 
+    public void setTranslatedTodo(String translatedTodo) {
+        this.translatedTodo = translatedTodo;
+    }
 }

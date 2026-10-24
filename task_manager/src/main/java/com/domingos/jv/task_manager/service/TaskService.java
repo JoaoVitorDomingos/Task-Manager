@@ -285,7 +285,15 @@ public class TaskService {
         ApiResponse<TaskApi> result = taskApiClient.getRandomTask();
 
         if(result.getStatus() == ApiStatus.SUCESS) {
-            return ApiResponse.success(result.getData().getTodo());
+
+            TaskApi taskApi = result.getData();
+
+            if(taskApi.getTranslatedTodo() == null) {
+                System.out.println("\nNao foi possivel traduzir!\n");
+                return ApiResponse.success(result.getData().getTodo());
+            }
+
+            return ApiResponse.success(result.getData().getTranslatedTodo());
         }
 
         return ApiResponse.failure(result.getErrorMessage(), null);

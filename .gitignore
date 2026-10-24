@@ -29,3 +29,8 @@ replay_pid*
 
 # Arquivos
 task_manager/repository/
+
+# Variaveis de ambiente
+.env
+.env.*
+!.env.example
