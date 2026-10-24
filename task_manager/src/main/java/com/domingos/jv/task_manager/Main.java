@@ -1,26 +1,14 @@
 package com.domingos.jv.task_manager;
 
-import com.domingos.jv.task_manager.api.ApiResult;
-import com.domingos.jv.task_manager.api.TaskApiClient;
+import com.domingos.jv.task_manager.api.ApiResponse;
 import com.domingos.jv.task_manager.enums.*;
-
-import static com.domingos.jv.task_manager.enums.EditOperation.NAME;
-import static com.domingos.jv.task_manager.enums.Operations.CREATE;
-import static com.domingos.jv.task_manager.enums.Operations.EDIT;
-import static com.domingos.jv.task_manager.enums.Operations.EXIT;
-import static com.domingos.jv.task_manager.enums.Operations.FINISH;
-import static com.domingos.jv.task_manager.enums.Operations.INVALID;
-import static com.domingos.jv.task_manager.enums.Operations.LIST;
-import static com.domingos.jv.task_manager.enums.Operations.REMOVE;
 
 import com.domingos.jv.task_manager.model.Task;
 import com.domingos.jv.task_manager.service.TaskService;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Main {
     
@@ -590,7 +578,7 @@ public class Main {
         do {
             System.out.println("-----Obtendo ideia...");
 
-            ApiResult<String> response = taskService.getRandomTask();
+            ApiResponse<String> response = taskService.getRandomTask();
 
             if(response.getStatus() == ApiStatus.FAILED) {
                 System.err.println("\n\n======================");

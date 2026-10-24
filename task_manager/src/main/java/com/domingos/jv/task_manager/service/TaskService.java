@@ -1,6 +1,6 @@
 package com.domingos.jv.task_manager.service;
 
-import com.domingos.jv.task_manager.api.ApiResult;
+import com.domingos.jv.task_manager.api.ApiResponse;
 import com.domingos.jv.task_manager.api.TaskApiClient;
 import com.domingos.jv.task_manager.enums.*;
 import com.domingos.jv.task_manager.model.Task;
@@ -281,13 +281,13 @@ public class TaskService {
     }
 
     // API
-    public ApiResult<String> getRandomTask() {
-        ApiResult<TaskApi> result = taskApiClient.getRandomTask();
+    public ApiResponse<String> getRandomTask() {
+        ApiResponse<TaskApi> result = taskApiClient.getRandomTask();
 
         if(result.getStatus() == ApiStatus.SUCESS) {
-            return ApiResult.success(result.getData().getTodo());
+            return ApiResponse.success(result.getData().getTodo());
         }
 
-        return ApiResult.failure(result.getErrorMessage(), null);
+        return ApiResponse.failure(result.getErrorMessage(), null);
     }
 }

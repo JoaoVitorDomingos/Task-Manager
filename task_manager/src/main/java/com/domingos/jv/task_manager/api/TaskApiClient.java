@@ -1,6 +1,5 @@
 package com.domingos.jv.task_manager.api;
 
-import com.domingos.jv.task_manager.enums.ApiStatus;
 import com.domingos.jv.task_manager.model.TaskApi;
 import com.google.gson.Gson;
 
@@ -27,7 +26,7 @@ public class TaskApiClient {
         gson = new Gson();
     }
 
-    public ApiResult<TaskApi> getRandomTask() {
+    public ApiResponse<TaskApi> getRandomTask() {
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI("https://dummyjson.com/todos/random"))
@@ -36,18 +35,18 @@ public class TaskApiClient {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if(response.statusCode() == 500)
-                return ApiResult.failure("500: Erro no servidor!", null);
+                return ApiResponse.failure("500: Erro no servidor!", null);
             else
-                return ApiResult.success(gson.fromJson(response.body(), TaskApi.class));
+                return ApiResponse.success(gson.fromJson(response.body(), TaskApi.class));
 
         } catch(URISyntaxException ex) {
-            return ApiResult.failure("400: Erro na comunicacao com o serivor!", ex);
+            return ApiResponse.failure("400: Erro na comunicacao com o serivor!", ex);
 
         } catch (InterruptedException ex) {
-            return ApiResult.failure("Operacao interrompida!", ex);
+            return ApiResponse.failure("Operacao interrompida!", ex);
 
         } catch (IOException ex) {
-            return ApiResult.failure("Erro: " + ex, ex);
+            return ApiResponse.failure("Erro: " + ex, ex);
         }
     }
 }

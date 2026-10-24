@@ -2,7 +2,7 @@ package com.domingos.jv.task_manager.api;
 
 import com.domingos.jv.task_manager.enums.ApiStatus;
 
-public final class ApiResult<T> {
+public final class ApiResponse<T> {
 
     private final ApiStatus status;
 
@@ -12,19 +12,19 @@ public final class ApiResult<T> {
 
     private final Exception exception;
 
-    private ApiResult(ApiStatus status, T data, String errorMessage, Exception exception) {
+    private ApiResponse(ApiStatus status, T data, String errorMessage, Exception exception) {
         this.status = status;
         this.data = data;
         this.errorMessage = errorMessage;
         this.exception = exception;
     }
 
-    public static <T> ApiResult<T> success(T data) {
-        return new ApiResult<>(ApiStatus.SUCESS, data, null, null);
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(ApiStatus.SUCESS, data, null, null);
     }
 
-    public static <T> ApiResult<T> failure(String errorMessage, Exception ex) {
-        return new ApiResult<>(ApiStatus.FAILED, null, errorMessage, ex);
+    public static <T> ApiResponse<T> failure(String errorMessage, Exception ex) {
+        return new ApiResponse<>(ApiStatus.FAILED, null, errorMessage, ex);
     }
 
     public ApiStatus getStatus() {
