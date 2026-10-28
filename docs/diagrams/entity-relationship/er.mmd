@@ -1,0 +1,22 @@
+erDiagram
+    direction LR
+    T[TASK] {
+        INT id PK
+        VARCHAR(50) description
+        BOOLEAN finished "DEFAULT false"
+        DATE dateCreated
+        DATE? deadline
+    }
+
+    t[TAG] {
+        INT id PK
+        VARCHAR(20) name
+    }
+
+    T }o--o{ t : contains
+
+    ListConfig {
+        INT listing_type "0 ou 1"
+        INT filter_type "1, 2, 3, 4"
+        INT exibition_limit "1 - 20"
+    }
